@@ -1,0 +1,7 @@
+/vendor/
+/.hallmark/
+/.phpunit.cache/
+.env
+.env.*
+*.log
+/legacy/_config.php

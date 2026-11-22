@@ -1,0 +1,31 @@
+/* Hallmark · theme: custom · idea: "A field-operations console for starting a NEMZ inquiry" · vibe: cinematic, precise, editorial, industrial · redesign: full · genre: editorial · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5 · weakest: R, technical overlays are restricted to the real rescue image caption */
+@font-face { font-family: "Nexa"; src: url("../fonts/Nexa-Light.otf") format("opentype"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Nexa"; src: url("../fonts/Nexa-Bold.otf") format("opentype"); font-weight: 700; font-display: swap; }
+:root {
+  --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
+  --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
+  --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+  --text-section: clamp(2rem, 2.5vw + 1rem, 3.5rem); --text-title: clamp(1.25rem, 0.75vw + 0.875rem, 1.625rem); --text-lead: clamp(1.125rem, 0.35vw + 1rem, 1.375rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+  --color-error: oklch(52% 0.19 27); --color-success: oklch(50% 0.12 150);
+  --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
+  --color-paper: oklch(15% 0.009 205); --color-paper-2: oklch(19% 0.01 205); --color-paper-3: oklch(25% 0.012 205);
+  --color-ink: oklch(96% 0.006 205); --color-ink-2: oklch(88% 0.009 205); --color-muted: oklch(74% 0.015 205);
+  --color-rule: oklch(40% 0.015 205); --color-border: oklch(65% 0.025 205);
+  --color-accent: oklch(80% 0.14 195); --color-accent-ink: oklch(18% 0.025 205); --color-focus: oklch(81% 0.15 195);
+  --color-accent-hover: oklch(87% 0.1 195); --color-brand: oklch(71% 0.12 210);
+  --color-sheet: oklch(97% 0.007 205); --color-sheet-2: oklch(92% 0.013 205);
+  --color-sheet-ink: oklch(23% 0.018 205); --color-sheet-muted: oklch(45% 0.022 205);
+  --color-sheet-rule: oklch(80% 0.014 205); --color-sheet-border: oklch(54% 0.02 205);
+  --color-sheet-accent: oklch(42% 0.077 207); --color-sheet-hover: oklch(33% 0.061 207);
+  --color-error-paper: oklch(94% 0.024 27); --color-error-on-dark: oklch(76% 0.14 27); --color-clear: transparent;
+  --font-display: "Nexa", Arial, sans-serif; --font-body: "Nexa", Arial, sans-serif; --font-outlier: var(--font-body);
+  --space-form: 32px; --display-weight: 700;
+  --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
+  --tracking-display: -0.035em;
+  --dur-editorial: 900ms; --dur-stagger: 90ms;
+  --text-mast: clamp(4rem, 8.4vw, 8rem); --text-chapter: clamp(3rem, 5.4vw, 5rem);
+}

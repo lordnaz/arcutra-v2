@@ -1,0 +1,13 @@
+# Internal dependencies, test artifacts, and configuration are not public pages.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(?:\.git|\.hallmark|tests|vendor|includes|legacy)(?:/|$) - [F,L,NC]
+</IfModule>
+# The same block for servers without URL rewriting.
+<IfModule mod_alias.c>
+    RedirectMatch 403 (?i)(?:^|/)(?:\.git|\.hallmark|tests|vendor|includes|legacy)(?:/|$)
+</IfModule>
+
+<FilesMatch "^(?:\.(?:env|git).*|composer\.(?:json|lock))$">
+    Require all denied
+</FilesMatch>

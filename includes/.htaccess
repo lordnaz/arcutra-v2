@@ -1,0 +1,2 @@
+# Server-side code only; pages include it from disk and it is never requested directly.
+Require all denied
