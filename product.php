@@ -45,12 +45,16 @@ $catalog = [
     <meta name="description" content="NEMZ ENERGY product catalog: gas detection, fall protection, respiratory protection, confined entry, lighting and PPE for supply or rent.">
     <title>Product catalog | NEMZ ENERGY</title>
     <link rel="stylesheet" href="assets/product.css">
+    <script src="assets/coding-words.js" defer></script>
     <script src="assets/product.js" defer></script>
+    <script src="assets/particles.js" defer></script>
+    <script src="assets/back-to-top.js" defer></script>
+    <script src="assets/scroll-meter.js" defer></script>
 </head>
 <body>
 <?php include __DIR__ . '/preloader.php'; ?>
 <a class="skip-link" href="#catalog">Skip to catalog</a>
-<header class="site-header">
+<header class="site-header particle-field" id="page-top" data-particles>
     <div class="container header-inner">
         <a class="brand" href="index.php" aria-label="NEMZ ENERGY home">
             <img src="img/nemz_logo_dark.png" width="487" height="126" alt="NEMZ ENERGY SDN BHD">
@@ -71,18 +75,25 @@ $catalog = [
     </div>
 </header>
 <main class="product-main" id="main-content">
+    <div class="hero-band particle-field" data-particles>
     <section class="container hero" aria-labelledby="product-heading">
         <div class="product-layout">
             <div class="product-intro">
-                <h1 id="product-heading"><span>Product</span> <span>NEMZ.</span></h1>
+                <h1 id="product-heading"><span class="product-title-word">Product<span class="product-title-mask" aria-hidden="true"><span>Product</span></span></span> <span>NEMZ.</span></h1>
                 <div class="hero-actions">
-                    <p class="lead">Safety equipment for supply or rent.</p>
+                    <p class="lead" data-product-description>Safety equipment for supply or rent.</p>
                     <a class="text-link" href="#catalog">Browse the catalog</a>
                 </div>
             </div>
             <figure class="field-image">
-                <div class="image-meta"><span>Breathing apparatus</span><span>Supply or rent</span></div>
-                <img src="img/gear-new.jpg" alt="Rows of self-contained breathing apparatus prepared on a service bench" fetchpriority="high">
+                <div class="technical-frame">
+                    <div class="technical-photo">
+                        <div class="image-meta"><span>Breathing apparatus</span><span>Supply or rent</span></div>
+                        <img src="img/gear-new.jpg" alt="Rows of self-contained breathing apparatus prepared on a service bench" fetchpriority="high">
+                    </div>
+                    <span class="technical-corner corner-start" aria-hidden="true"></span>
+                    <span class="technical-corner corner-end" aria-hidden="true"></span>
+                </div>
                 <figcaption><a href="mailto:sales@nemz.com.my">sales@nemz.com.my</a><a href="tel:+60139856000">+60-13 985 6000</a></figcaption>
             </figure>
         </div>
@@ -101,57 +112,75 @@ $catalog = [
             </span>
         </div>
     </section>
-    <section class="catalog-section" id="catalog" aria-labelledby="catalog-heading">
+    </div>
+    <section class="catalog-section particle-field" id="catalog" aria-labelledby="catalog-heading" data-particles>
+        <header class="container catalog-head">
+            <div><span class="section-number" aria-hidden="true">01</span><h2 id="catalog-heading">The catalog.</h2></div>
+            <p class="index-note">Every range is available for supply or rent. Ask for availability.</p>
+        </header>
         <div class="container catalog-layout">
             <div class="catalog-index">
-                <span class="section-number" aria-hidden="true">01</span>
-                <h2 id="catalog-heading">The catalog.</h2>
-                <nav aria-label="Catalog index">
-                    <ol>
-                        <?php foreach ($catalog as $i => $item): ?>
-                            <li><a class="index-link" href="#plate-<?= $e($item['slug']) ?>">
-                                <span class="index-number" aria-hidden="true"><?= $e(str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT)) ?></span>
-                                <span class="index-name"><?= $e($item['name']) ?></span>
-                            </a></li>
-                        <?php endforeach; ?>
-                    </ol>
-                </nav>
-                <p class="index-note">Every range is available for supply or rent. Ask for availability.</p>
-                <a class="text-link" href="mailto:sales@nemz.com.my">sales@nemz.com.my</a>
+                <details class="catalog-picker" open>
+                    <summary>Choose a range</summary>
+                    <nav aria-label="Catalog index">
+                        <ol>
+                            <?php foreach ($catalog as $i => $item): ?>
+                                <li><a class="index-link" href="#plate-<?= $e($item['slug']) ?>">
+                                    <span class="index-number" aria-hidden="true"><?= $e(str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT)) ?></span>
+                                    <span class="index-name"><?= $e($item['name']) ?></span>
+                                </a></li>
+                            <?php endforeach; ?>
+                        </ol>
+                    </nav>
+                </details>
+                <div class="catalog-meter" aria-hidden="true" hidden>
+                    <div><span>Catalog position</span><span data-catalog-position>— / 08</span></div>
+                    <div class="catalog-progress"><span></span></div>
+                </div>
+                <a class="text-link catalog-email" href="mailto:sales@nemz.com.my">sales@nemz.com.my</a>
             </div>
             <div class="catalog-plates">
                 <?php foreach ($catalog as $i => $item): ?>
-                    <article class="plate" id="plate-<?= $e($item['slug']) ?>" data-plate="<?= $e($item['slug']) ?>" aria-labelledby="plate-title-<?= $e($item['slug']) ?>">
+                    <article class="plate" id="plate-<?= $e($item['slug']) ?>" data-plate="<?= $e($item['slug']) ?>" aria-labelledby="plate-title-<?= $e($item['slug']) ?>" tabindex="-1">
                         <header class="plate-head">
                             <span class="plate-number" aria-hidden="true"><?= $e(str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT)) ?></span>
                             <h3 id="plate-title-<?= $e($item['slug']) ?>"><?= $e($item['name']) ?></h3>
                         </header>
-                        <figure class="plate-figure <?= $e($item['kind']) ?>">
-                            <div class="image-meta"><span><?= $e($item['meta']) ?></span><span><?= $e(count($item['rows']) > 1 ? count($item['rows']) . ' models' : ($item['rows'] ? 'Brochure available' : 'Details on request')) ?></span></div>
-                            <img src="img/<?= $e($item['image']) ?>" alt="<?= $e($item['alt']) ?>" loading="lazy">
-                        </figure>
-                        <?php if ($item['rows']): ?>
-                            <ul class="model-list">
-                                <?php foreach ($item['rows'] as $row): ?>
-                                    <li>
-                                        <span class="model-name"><?= $e($row[0]) ?></span>
-                                        <a class="model-pdf" href="doc/<?= $e($row[1]) ?>" target="_blank" rel="noopener noreferrer">Brochure <small>PDF, new tab</small></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
-                        <?php if ($item['note'] !== ''): ?>
-                            <p class="plate-note"><?= $e($item['note']) ?></p>
-                        <?php endif; ?>
-                        <div class="plate-actions">
-                            <a class="text-link" href="contact.php?product=<?= $e($item['slug']) ?>#inquiry-form">Inquire about this range</a>
+                        <div class="plate-content">
+                            <figure class="plate-figure <?= $e($item['kind']) ?>">
+                                <figcaption class="plate-meta"><span><?= $e($item['meta']) ?></span><span><?= $e(count($item['rows']) > 1 ? count($item['rows']) . ' models' : ($item['rows'] ? 'Brochure available' : 'Details on request')) ?></span></figcaption>
+                                <div class="technical-frame">
+                                    <div class="technical-photo"><img src="img/<?= $e($item['image']) ?>" alt="<?= $e($item['alt']) ?>" loading="lazy"></div>
+                                    <span class="technical-corner corner-start" aria-hidden="true"></span>
+                                    <span class="technical-corner corner-end" aria-hidden="true"></span>
+                                </div>
+                            </figure>
+                            <div class="plate-details">
+                                <?php if ($item['rows']): ?>
+                                    <ul class="model-list">
+                                        <?php foreach ($item['rows'] as $row): ?>
+                                            <li>
+                                                <span class="model-name"><?= $e($row[0]) ?></span>
+                                                <a class="model-pdf" href="doc/<?= $e($row[1]) ?>" target="_blank" rel="noopener noreferrer">Brochure <small>PDF, new tab</small></a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php endif; ?>
+                                <?php if ($item['note'] !== ''): ?>
+                                    <p class="plate-note"><?= $e($item['note']) ?></p>
+                                <?php endif; ?>
+                                <div class="plate-actions">
+                                    <a class="primary-button" href="contact.php?product=<?= $e($item['slug']) ?>#inquiry-form">Inquire about this range</a>
+                                </div>
+                            </div>
                         </div>
                     </article>
                 <?php endforeach; ?>
             </div>
         </div>
     </section>
-    <section class="ask-section" aria-labelledby="ask-heading">
+    <section class="ask-section particle-field" aria-labelledby="ask-heading" data-particles>
+        <div class="container"><div class="ask-line" aria-hidden="true"><span></span></div></div>
         <div class="container ask-layout">
             <div class="ask-title">
                 <span class="section-number" aria-hidden="true">02</span>
@@ -168,7 +197,7 @@ $catalog = [
         </div>
     </section>
 </main>
-<footer class="site-footer">
+<footer class="site-footer particle-field" data-particles>
     <div class="container footer-inner">
         <p>© 2025 NEMZ ENERGY. All rights reserved.</p>
         <details class="social-links">
@@ -181,5 +210,14 @@ $catalog = [
         </details>
     </div>
 </footer>
+<div class="scroll-meter" data-scroll-meter role="progressbar" aria-label="Page scroll progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden>
+    <span class="scroll-meter-label" aria-hidden="true">0%</span>
+    <span class="scroll-meter-track" aria-hidden="true"><span class="scroll-meter-marker"></span></span>
+    <span class="scroll-meter-current" data-scroll-percent aria-hidden="true">0%</span>
+    <span class="scroll-meter-label" aria-hidden="true">100%</span>
+</div>
+<a class="back-to-top" href="#page-top" data-back-to-top aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 11 12 5 18 11M12 5v14"/></svg>
+</a>
 </body>
 </html>

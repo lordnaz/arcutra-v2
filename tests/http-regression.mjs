@@ -55,19 +55,25 @@ let checks = 0;
 function check(condition, label) { assert.ok(condition, label); checks++; }
 // Runs the real assets/contact.js against a minimal document; no browser is required.
 function verifySubmissionFeedback(configured) {
-    const element = id => ({ id, value: 'filled', textContent: '', disabled: false, validity: {}, validationMessage: '', attributes: {},
+    const element = id => ({ id, value: 'filled', textContent: '', disabled: false, validity: {}, validationMessage: '', attributes: {}, dataset: {}, selectedOptions: [],
         setAttribute(key, value) { this.attributes[key] = value; }, getAttribute(key) { return this.attributes[key]; },
-        addEventListener(type, handler) { (this.events ??= {})[type] = handler; }, focus() {}, contains: () => false });
+        addEventListener(type, handler) { (this.events ??= {})[type] = handler; }, focus() {}, contains: () => false,
+        append() {}, replaceChildren() {} });
     const button = Object.assign(element('sendmail'), { textContent: 'Send inquiry', disabled: !configured });
     const form = Object.assign(element('inquiry-form'), { querySelector: () => button });
     const nodes = { 'inquiry-form': form, 'contact-availability': configured ? null : element('contact-availability'),
         'contact-feedback': null, 'site-preloader': null, 'inquiry-types': null };
     const events = {};
+    const listeners = {};
     runInNewContext(readFileSync(path.join(root, 'assets', 'contact.js'), 'utf8'), {
-        window: { scrollY: 0, matchMedia: () => ({ matches: true, addEventListener() {} }), addEventListener: (type, handler) => { events[type] = handler; } },
+        window: { scrollY: 0, matchMedia: () => ({ matches: true, addEventListener() {} }), addEventListener: (type, handler) => {
+            (listeners[type] ??= []).push(handler);
+            events[type] = (event = {}) => listeners[type].forEach(listener => listener(event));
+        } },
         document: { documentElement: {}, getElementById: id => id in nodes ? nodes[id] : (nodes[id] = element(id)),
-            querySelector: () => Object.assign(element('training'), { open: false }), querySelectorAll: () => [], addEventListener() {} },
-        getComputedStyle: () => ({ getPropertyValue: () => '' }), location: { hash: '' }, requestAnimationFrame: callback => callback()
+            querySelector: () => Object.assign(element('training'), { open: false }), querySelectorAll: () => [], addEventListener() {},
+            createDocumentFragment: () => element('fragment'), createElement: tag => element(tag) },
+        getComputedStyle: () => ({ getPropertyValue: () => '' }), location: { hash: '' }, requestAnimationFrame: callback => callback(), cancelAnimationFrame() {}
     });
     const progress = nodes['contact-progress'];
     const idle = () => button.disabled === !configured && button.textContent === 'Send inquiry';
@@ -174,8 +180,15 @@ try {
     for (const route of ['index.php', 'product.php', 'contact.php']) {
         const { response, html } = await get(route);
         check(html.includes('</html>'), `${route}: full document`);
-        check((html.match(/id="site-preloader"/g) || []).length === 1, `${route}: one shared loader`);
-        check(/id="site-preloader"[^>]*class="preloader complete"[^>]*hidden/.test(html), `${route}: loader defaults to hidden without JavaScript`);
+        if (route === 'contact.php') {
+            check(!html.includes('id="site-preloader"'), 'Contact form is available without a blocking loader');
+        } else {
+            check((html.match(/id="site-preloader"/g) || []).length === 1, `${route}: one shared loader`);
+            check(/id="site-preloader"[^>]*class="preloader complete"[^>]*hidden/.test(html), `${route}: loader defaults to hidden without JavaScript`);
+        }
+        for (const asset of ['coding-words', 'particles', 'back-to-top', 'scroll-meter']) {
+            check(html.includes(`src="assets/${asset}.js"`), `${route}: shared ${asset} behavior is wired`);
+        }
         for (const page of ['index.php', 'product.php', 'contact.php']) check(html.includes(`href="${page}"`), `${route}: navigation reaches ${page}`);
         check(/<title>[^<]+<\/title>/.test(html) && /<meta name="description" content="[^"]+">/.test(html), `${route}: title and description`);
         check(!/noindex|preview|contact_new|legacy\/|\.\.\//i.test(html), `${route}: no preview or retired references`);
@@ -204,7 +217,7 @@ try {
         check(catalog.includes(`id="plate-${category}"`) && catalog.includes(`href="#plate-${category}"`), `${category}: catalog plate and index link`);
         check(catalog.includes(`href="contact.php?product=${category}#inquiry-form"`), `${category}: populated inquiry link`);
         const inquiry = await get(`contact.php?inquiry=product&product=${category}`);
-        check(/value="product" selected/.test(inquiry.html), `${category}: inquiry type preselected`);
+        check(/value="product"[^>]* selected/.test(inquiry.html), `${category}: inquiry type preselected`);
         check(inquiry.html.includes('value="Product inquiry:'), `${category}: subject prefilled`);
     }
     for (const resource of resources) {

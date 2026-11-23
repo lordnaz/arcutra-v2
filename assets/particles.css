@@ -1,0 +1,36 @@
+/* Hallmark · shared component: dense particle field · theme: existing NEMZ tokens · decorative cursor response with static touch, reduced-motion and no-JavaScript fallbacks · v2.0.0 */
+/* Hallmark · pre-emit critique: bounded canvas below content; page sections retain their own surface and accent tokens */
+:root {
+  --particle-spacing: 18px;
+  --particle-radius: 0.85px;
+  --particle-dark-alpha: 0.2;
+  --particle-light-alpha: 0.42;
+  --particle-light-color: var(--color-sheet-accent);
+}
+.particle-field {
+  --particle-color: var(--color-accent);
+  --particle-idle-alpha: var(--particle-dark-alpha);
+  --particle-surface: var(--color-paper);
+  --particle-dot: color-mix(in srgb, var(--particle-color) calc(var(--particle-idle-alpha) * 100%), var(--color-clear));
+  position: relative;
+  isolation: isolate;
+}
+.particle-field:is(.company-section, .work-section, .catalog-section, .office-section) {
+  --particle-color: var(--particle-light-color);
+  --particle-idle-alpha: var(--particle-light-alpha);
+}
+.particle-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--particle-dot) var(--particle-radius), var(--color-clear) 1.2px);
+  background-size: var(--particle-spacing) var(--particle-spacing);
+}
+.site-header.particle-field { z-index: var(--z-dropdown); }
+.particle-layer { position: absolute; inset: 0; z-index: -1; overflow: clip; pointer-events: none; }
+.particle-canvas { position: absolute; top: 0; left: 0; display: block; max-width: none; pointer-events: none; color: var(--particle-color); background: var(--particle-surface); mask-image: radial-gradient(circle closest-side, var(--color-ink) 80%, var(--color-clear)); }
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .particle-layer { display: none; }
+}

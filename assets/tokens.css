@@ -21,11 +21,13 @@
   --color-sheet-ink: oklch(23% 0.018 205); --color-sheet-muted: oklch(45% 0.022 205);
   --color-sheet-rule: oklch(80% 0.014 205); --color-sheet-border: oklch(54% 0.02 205);
   --color-sheet-accent: oklch(42% 0.077 207); --color-sheet-hover: oklch(33% 0.061 207);
+  --color-company-accent: oklch(50% 0.12 180);
+  --color-purpose-paper: var(--color-paper-2); --color-purpose-ink: var(--color-ink); --color-purpose-accent: var(--color-accent);
   --color-error-paper: oklch(94% 0.024 27); --color-error-on-dark: oklch(76% 0.14 27); --color-clear: transparent;
   --font-display: "Nexa", Arial, sans-serif; --font-body: "Nexa", Arial, sans-serif; --font-outlier: var(--font-body);
   --space-form: 32px; --display-weight: 700;
   --radius-card: 0; --radius-pill: 0; --rule-hair: 1px; --shadow-card: none;
   --tracking-display: -0.035em;
-  --dur-editorial: 900ms; --dur-stagger: 90ms;
+  --dur-editorial: 900ms; --dur-stagger: 90ms; --dur-showcase: 650ms;
   --text-mast: clamp(4rem, 8.4vw, 8rem); --text-chapter: clamp(3rem, 5.4vw, 5rem);
 }
