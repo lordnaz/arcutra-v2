@@ -120,116 +120,16 @@
         }
     });
 
-    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const animations = new Set();
-    const timing = getComputedStyle(document.documentElement);
-    const duration = parseFloat(timing.getPropertyValue('--dur-showcase')) || 650;
-    const lineDuration = parseFloat(timing.getPropertyValue('--dur-long')) || 420;
-    const easing = timing.getPropertyValue('--ease-out').trim();
-    const animate = (element, frames, options = {}) => {
-        if (motion.matches || document.hidden || !element?.animate) return;
-        const animation = element.animate(frames, { duration, easing, fill: 'backwards', ...options });
-        animations.add(animation);
-        animation.finished.catch(() => {}).finally(() => animations.delete(animation));
-        return animation;
-    };
-    const visible = element => {
-        const rect = element.getBoundingClientRect();
-        return rect.bottom > 0 && rect.top < innerHeight;
-    };
-    // Original words stay selectable and accessible. Only empty, decorative overlays decode.
-    const description = document.querySelector('[data-contact-description]');
-    const words = [];
-    const content = document.createDocumentFragment();
-    for (const part of description.textContent.match(/\S+|\s+/g) || []) {
-        if (/^\s+$/.test(part)) { content.append(document.createTextNode(part)); continue; }
-        const word = document.createElement('span');
-        word.className = 'contact-word';
-        const text = document.createElement('span');
-        text.className = 'contact-word-text';
-        text.textContent = part;
-        const cipher = document.createElement('span');
-        cipher.className = 'contact-cipher';
-        cipher.setAttribute('aria-hidden', 'true');
-        word.append(text, cipher);
-        content.append(word);
-        words.push(word);
-    }
-    description.replaceChildren(content);
-    let decodeFrame = 0;
-    const settleText = () => {
-        cancelAnimationFrame(decodeFrame);
-        decodeFrame = 0;
-        words.forEach(word => {
-            word.classList.remove('is-decoding');
-            word.lastElementChild.removeAttribute('data-scramble');
-        });
-        description.dataset.textState = 'complete';
-    };
-    const decodeText = () => {
-        if (motion.matches || !description.animate || document.hidden || !visible(description) || !window.createCodingWordScrambler) return;
-        description.dataset.textState = 'running';
-        const scrambleWord = window.createCodingWordScrambler(words);
-        const start = performance.now();
-        let lastTick = -1;
-        const step = now => {
-            const elapsed = now - start;
-            if (elapsed >= 1080 || !visible(description)) { settleText(); return; }
-            const tick = Math.floor(elapsed / 45);
-            if (tick !== lastTick) {
-                lastTick = tick;
-                words.forEach((word, index) => {
-                    const progress = Math.max(0, Math.min(1, (elapsed - 135 - 630 * index / Math.max(1, words.length - 1)) / 315));
-                    scrambleWord(word, progress < 1);
-                });
-            }
-            decodeFrame = requestAnimationFrame(step);
-        };
-        step(start);
-    };
-    settleText();
-    const settleMotion = () => {
-        animations.forEach(animation => animation.cancel());
-        animations.clear();
-        settleText();
-    };
-    motion.addEventListener('change', () => { if (motion.matches) settleMotion(); });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) settleMotion(); });
-    window.addEventListener('pagehide', settleMotion);
-    window.addEventListener('pageshow', event => { if (event.persisted) settleMotion(); });
-    form.addEventListener('focusin', settleMotion);
-    // No loader: the form is available immediately, independently of decorative motion.
-    const entrance = () => {
-        if (location.hash || document.getElementById('contact-feedback') || window.scrollY > 24 || form.contains(document.activeElement)) return;
-        const mask = document.querySelector('.contact-title-mask');
-        animate(mask, [{ transform: 'translateX(-100%)' }, { transform: 'none' }]);
-        animate(mask.firstElementChild, [{ transform: 'translateX(100%)' }, { transform: 'none' }]);
-        decodeText();
-    };
-    (document.fonts?.ready || Promise.resolve()).then(() => requestAnimationFrame(entrance));
-    const revealImage = frame => {
-        const image = frame.querySelector('img');
-        const play = () => {
-            if (!visible(frame)) return;
-            animate(image, [{ transform: 'scale(1.04)' }, { transform: 'none' }]);
-            frame.querySelectorAll('.technical-corner').forEach(corner => {
-                animate(corner, [{ transform: 'scale(0.7)', opacity: 0 }, { transform: 'none', opacity: 1 }]);
-            });
-        };
-        if (image.complete) { if (image.naturalWidth) play(); }
-        else image.addEventListener('load', play, { once: true });
-    };
-    // Each photo or divider enters once; fields, labels, values and feedback never animate.
-    if ('IntersectionObserver' in window) {
-        const reveal = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting || entry.intersectionRatio < 0.15) return;
-                reveal.unobserve(entry.target);
-                if (entry.target.matches('.technical-frame')) revealImage(entry.target);
-                else animate(entry.target.firstElementChild, [{ transform: 'scaleX(0)' }, { transform: 'none' }], { duration: lineDuration });
-            });
-        }, { threshold: 0.15 });
-        document.querySelectorAll('.technical-frame, .section-line').forEach(element => reveal.observe(element));
+    // Form behavior stays independent of the optional decorative scroll controller.
+    const motion = window.scrollMotion;
+    if (motion) {
+        const blocked = () => form.contains(document.activeElement);
+        motion.wipe(document.querySelector('.contact-title-mask'), { blocked });
+        window.createScrollCodingText?.(document.querySelector('[data-contact-description]'), 'contact', { hero: true, blocked });
+        document.querySelectorAll('.technical-frame').forEach(frame => motion.image(frame, { hero: true, blocked }));
+        document.querySelectorAll('.section-line > span').forEach(line => motion.line(line, { blocked }));
+        form.addEventListener('focusin', motion.schedule);
+        form.addEventListener('focusout', motion.schedule);
     }
 
     // Inquiry index rows set the form type in place; the GET href remains the no-script fallback.

@@ -186,7 +186,7 @@ try {
             check((html.match(/id="site-preloader"/g) || []).length === 1, `${route}: one shared loader`);
             check(/id="site-preloader"[^>]*class="preloader complete"[^>]*hidden/.test(html), `${route}: loader defaults to hidden without JavaScript`);
         }
-        for (const asset of ['coding-words', 'particles', 'back-to-top', 'scroll-meter']) {
+        for (const asset of ['scroll-motion', 'coding-words', 'particles', 'back-to-top', 'scroll-meter']) {
             check(html.includes(`src="assets/${asset}.js"`), `${route}: shared ${asset} behavior is wired`);
         }
         for (const page of ['index.php', 'product.php', 'contact.php']) check(html.includes(`href="${page}"`), `${route}: navigation reaches ${page}`);

@@ -23,6 +23,7 @@
             "node --check assets/coding-words.js",
             "node --check assets/particles.js",
             "node --check assets/scroll-meter.js",
+            "node --check assets/scroll-motion.js",
             "node tests/preloader-test.mjs",
             "node tests/http-regression.mjs",
             "node tests/http-regression.mjs accept",

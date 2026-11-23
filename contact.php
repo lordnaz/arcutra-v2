@@ -21,6 +21,7 @@ $inquiryGuidance = [
     <meta name="description" content="Contact NEMZ ENERGY in Port Dickson for corporate, services, product and training inquiries.">
     <title>Contact us | NEMZ ENERGY</title>
     <link rel="stylesheet" href="assets/contact.css">
+    <script src="assets/scroll-motion.js" defer></script>
     <script src="assets/coding-words.js" defer></script>
     <script src="assets/contact.js" defer></script>
     <script src="assets/particles.js" defer></script>

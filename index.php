@@ -55,6 +55,7 @@ $clients = [
     <meta name="description" content="NEMZ ENERGY SDN BHD: maintenance services for high-risk industry and safety equipment for supply or rent. Engineering, safety, architecture and manpower.">
     <title>NEMZ ENERGY | Maintenance services and safety equipment</title>
     <link rel="stylesheet" href="assets/home.css">
+    <script src="assets/scroll-motion.js" defer></script>
     <script src="assets/coding-words.js" defer></script>
     <script src="assets/home.js" defer></script>
     <script src="assets/particles.js" defer></script>

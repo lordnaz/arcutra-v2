@@ -45,6 +45,7 @@ $catalog = [
     <meta name="description" content="NEMZ ENERGY product catalog: gas detection, fall protection, respiratory protection, confined entry, lighting and PPE for supply or rent.">
     <title>Product catalog | NEMZ ENERGY</title>
     <link rel="stylesheet" href="assets/product.css">
+    <script src="assets/scroll-motion.js" defer></script>
     <script src="assets/coding-words.js" defer></script>
     <script src="assets/product.js" defer></script>
     <script src="assets/particles.js" defer></script>

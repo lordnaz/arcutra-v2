@@ -3,7 +3,7 @@
  * signature: poster NEMZ Energy beside the confined-space entry photograph, a four-stage confined-space entry diagram and nineteen client marks mounted on mineral-white chips · job: inquire · imagery: existing NEMZ photographs, published client marks and a technical SVG diagram · axes: dark/grotesk-heavy/cool · posture: Restrained · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5 · weakest: R, every capability line, statement and client mark is copied from the live company pages */
 /* Hallmark · kept-check limitation: rental, calibration and training remain intentionally unpublished, mirrored from the live site */
-/* Hallmark · motion: one-shot entrance, reversible discipline diagram and company title/text scan; reduced-motion and no-JavaScript fallbacks */
+/* Hallmark · motion: position-driven reversible reveals, diagram and text scan; reduced-motion and no-JavaScript fallbacks */
 /* Hallmark · verification: company start, midpoint, completion and chamfered frames inspected in headless captures; responsive, reverse-scroll, reduced-motion and no-JavaScript checks */
 /* Hallmark · waive 59 · ruled chapter bands and colour shifts separate this dense operations ledger · the compact chapter rhythm is intentional */
 @import url("./tokens.css");
@@ -289,6 +289,11 @@ h1 span:last-child { padding-left: var(--space-2xl); }
   .team-frame img, .team-corner, .team-figure figcaption, .purpose-link > span, .statement h3, .statement p { opacity: 1 !important; transform: none !important; }
 }
 
+/* Scrubbed properties never continue interpolating after scrolling stops. */
+.discipline-story.is-enhanced .discipline-row, .discipline-story .discipline-head h3,
+.discipline-story.is-enhanced .entry-layer, .discipline-story .entry-entrant,
+.discipline-story .entry-progress-bar { transition: none; }
+
 /* Dense page-wide grid. Only a small cursor neighborhood is rendered dynamically. */
 .home-main { padding-top: 0; }
 .hero-band { padding-top: var(--space-lg); }
@@ -306,4 +311,8 @@ h1 span:last-child { padding-left: var(--space-2xl); }
   .discipline-story.is-static .discipline-row { opacity: 1; transition: none; }
   .discipline-story.is-static .entry-layer, .discipline-story.is-static .entry-entrant, .discipline-story.is-static .entry-progress-bar { transition: none; }
   .discipline-row { min-height: 0; }
+}
+/* A reserved caption must not crowd the reading area beneath the compact diagram. */
+@media (max-width: 60rem) and (min-height: 32.001rem) {
+  .entry-diagram { height: min(46svh, 420px, calc(65svh - var(--entry-chrome-height, 0px))); }
 }
